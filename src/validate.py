@@ -66,3 +66,19 @@ def validate_metadata(metadata):
     metadata["DATATYPE"] = datatype
 
     return True
+
+
+def validate_band_number(band_text, nb_bands):
+    """Vérifie que le numéro de bande est valide."""
+
+    try:
+        band = int(band_text)
+    except (ValueError, TypeError):
+        print("Erreur : le numéro de bande doit être un nombre entier.")
+        return False
+
+    if band < 0 or band > nb_bands - 1:
+        print("Erreur : le numéro de bande doit être entre 0 et", nb_bands - 1)
+        return False
+
+    return True
