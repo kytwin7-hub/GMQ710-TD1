@@ -82,3 +82,18 @@ def validate_band_number(band_text, nb_bands):
         return False
 
     return True
+
+
+def validate_dimensions(pixel_data, width, height):
+    """Vérifie que le nombre de lignes et de colonnes correspond aux métadonnées."""
+
+    if len(pixel_data) != height:
+        print("Erreur : nombre de lignes attendu :", height, "; trouvé :", len(pixel_data))
+        return False
+
+    for row in pixel_data:
+        if len(row) != width:
+            print("Erreur : nombre de colonnes attendu :", width, "; trouvé :", len(row))
+            return False
+
+    return True
