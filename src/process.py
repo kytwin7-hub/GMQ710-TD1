@@ -63,3 +63,19 @@ def extract_pixel_data(lines, band=0):
     return pixel_data
 
 
+def convert_to_numbers(pixel_data):
+    """Convertit les valeurs de pixels de texte en nombres entiers."""
+
+    numbers = []
+    for row in pixel_data:
+        new_row = []
+        for value in row:
+            try:
+                number = int(value)
+            except (ValueError, TypeError):
+                print("Erreur : valeur de pixel invalide :", value)
+                return None
+            new_row.append(number)
+        numbers.append(new_row)
+
+    return numbers
