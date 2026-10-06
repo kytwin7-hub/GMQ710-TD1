@@ -34,3 +34,27 @@ def apply_threshold(pixel_data, threshold, nodata_value):
         mask.append(new_row)
 
     return mask
+
+
+def create_histogram(pixel_data, min_value, max_value, nodata_value, nb_classes):
+    """Compte le nombre de valeurs dans chaque classe (NODATA est ignoré)."""
+
+    if max_value == min_value:
+        print("Erreur : toutes les valeurs sont identiques, histogramme impossible.")
+        return None
+
+    counts = [0] * nb_classes
+
+    for row in pixel_data:
+        for value in row:
+            if value == nodata_value:
+                continue
+
+            index = int((value - min_value) / (max_value - min_value) * nb_classes)
+
+            if index == nb_classes:
+                index = nb_classes - 1
+
+            counts[index] += 1
+
+    return counts
