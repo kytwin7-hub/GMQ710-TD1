@@ -16,3 +16,21 @@ def normalize_data(pixel_data, min_value, max_value, nodata_value):
         normalized.append(new_row)
 
     return normalized
+
+
+def apply_threshold(pixel_data, threshold, nodata_value):
+    """Applique un masque : 1 si la valeur >= seuil, sinon 0 (NODATA donne 0)."""
+
+    mask = []
+    for row in pixel_data:
+        new_row = []
+        for value in row:
+            if value == nodata_value:
+                new_row.append(0)
+            elif value >= threshold:
+                new_row.append(1)
+            else:
+                new_row.append(0)
+        mask.append(new_row)
+
+    return mask
