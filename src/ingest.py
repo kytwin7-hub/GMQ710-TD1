@@ -8,10 +8,33 @@ sous forme de Liste de listes. Aucune transformation ici.
 
 # Les données sont stockées dans un format spécial : elles sont encodées puis chiffrées,
 # ce qui oblige à les déchiffrer avant de pouvoir les lire et les exploiter correctement.
-import base64
+BASE64_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+
+
+def decode_base64(text):
+    result = []
+    padding = text.count("=")
+
+    for i in range(0, len(text), 4):
+        group = text[i:i + 4]
+        value = 0
+
+        for char in group:
+            if char == "=":
+                value = value * 64
+            else:
+                value = value * 64 + BASE64_ALPHABET.index(char)
+
+        result.append((value >> 16) & 255)
+        result.append((value >> 8) & 255)
+        result.append(value & 255)
+
+    return bytes(result[:len(result) - padding])
 
 # Clé utilisée pour déchiffrer les données par opération XOR.
 # La clé est stockée sous forme d'octets (bytes), ce qui est adapté à un chiffrement de type XOR.
+
+
 key = b"datcha"
 
 # Fonction qui applique un XOR entre chaque octet des données et la clé.
@@ -28,7 +51,7 @@ def read_grid(filename):
 
     # Le fichier contient du texte encodé en Base64.
     # On le transforme donc en données binaires lisibles.
-    encrypted_data = base64.b64decode(encoded_text)
+    encrypted_data = decode_base64(encoded_text.decode("ascii"))
 
     # Le XOR est utilisé pour inverser le chiffrement initial.
     decrypted_data = xor_data(encrypted_data, key)
