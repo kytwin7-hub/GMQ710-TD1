@@ -96,7 +96,8 @@ def main():
     )
 
     print("Histogramme :", histogram)
-    print("Masque :", mask)
+    nb_masque = sum(sum(row) for row in mask)
+    print("Masque :", nb_masque, "pixels >= seuil", THRESHOLD)
 
 
 main()
